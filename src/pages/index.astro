@@ -1,0 +1,220 @@
+---
+import '../styles/global.css';
+import { WAITLIST_ENDPOINT } from '../config';
+
+const title = 'Fidius — Model routing for coding agents';
+const description =
+  'Right model. Right task. Right budget. Every coding-agent session, routed to the cheapest model that can do the job.';
+
+// Routing drawing, in the SVG's own units (1600 × 800 = 16em × 8em around the headline).
+// The router sits on the dot of the "i" in "Right budget." (measured in a browser).
+const router = { x: 636, y: 440 };
+const modelX = 1230;
+const modelYs = [180, 290, 400, 510, 620];
+const inYs = [280, 440, 520];
+
+const incoming = (y: number) =>
+  y === router.y
+    ? `M-200 ${y} L${router.x} ${y}`
+    : `M-200 ${y} C 300 ${y}, 455 ${router.y}, ${router.x} ${router.y}`;
+const branch = (y: number) =>
+  `M${router.x} ${router.y} C 845 ${router.y}, 940 ${y}, ${modelX} ${y}`;
+
+// Each route: which incoming line a session arrives on, which model it is routed to, and when.
+const routes = [
+  { inY: 280, outY: 180, delay: 0 },
+  { inY: 520, outY: 510, delay: 2.2 },
+  { inY: 440, outY: 290, delay: 4.4 },
+  { inY: 280, outY: 620, delay: 6.6 },
+  { inY: 520, outY: 400, delay: 8.8 },
+];
+
+const agents = ['Claude Code', 'Cursor', 'OpenAI Codex', 'GitHub Copilot', 'Windsurf', 'Cline', 'Gemini CLI'];
+
+const faqs = [
+  {
+    q: 'Does it work with any coding agent?',
+    a: 'Yes. Fidius sits between your coding agent and the models, so it works with Claude Code, Cursor, Codex, Copilot, Cline and any other agent your team uses, without changing how anyone works.',
+  },
+  {
+    q: 'Does it work with my current AI gateway or Bedrock account?',
+    a: 'Yes. Fidius works on top of your existing AI gateway or Amazon Bedrock account. You keep your providers and your keys; Fidius decides which model handles each session.',
+  },
+  {
+    q: 'How does the routing work?',
+    a: 'We train the routing layer on your specific coding tasks. No data leaves your environment, and we do not retain any of it.',
+  },
+  {
+    q: 'How do you know a cheaper model is accurate enough for my task?',
+    a: 'During onboarding we define test criteria with you, and they are checked continuously on your tasks. We take task accuracy seriously: the router sends work to a cheaper model only when it is certain accuracy is maintained.',
+  },
+];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href="https://fidius.ai/" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="theme-color" content="#000000" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://fidius.ai/" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta name="twitter:card" content="summary" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400&family=Instrument+Serif:ital@0;1&display=swap"
+    />
+  </head>
+  <body>
+    <header class="site-header container">
+      <a href="#top" class="wordmark" aria-label="Fidius home">fidius</a>
+      <nav class="site-nav" aria-label="Main">
+        <a href="#faq" class="muted">FAQ</a>
+        <a href="#waitlist" class="pill">Join waitlist</a>
+      </nav>
+    </header>
+
+    <main>
+      <section id="top" class="hero">
+        <div class="hero-inner">
+          <div class="eyebrow">Model routing for coding agents</div>
+
+          <div class="headline-wrap">
+            <svg class="routes" aria-hidden="true" viewBox="0 0 1600 800">
+              {inYs.map((y) => <path class="route-line" d={incoming(y)} />)}
+              {modelYs.map((y) => <path class="route-line" d={`${branch(y)} L2400 ${y}`} />)}
+
+              {routes.map((r) => <path class="route-glow" d={branch(r.outY)} style={`animation-delay:${r.delay}s`} />)}
+              {routes.map((r) => (
+                <path
+                  class="route-pulse"
+                  pathLength="1"
+                  d={`${incoming(r.inY)} ${branch(r.outY).replace(/^M\S+ \S+ /, '')}`}
+                  style={`animation-delay:${r.delay}s`}
+                />
+              ))}
+
+              {modelYs.map((y) => <circle class="route-dot" cx={modelX} cy={y} r="2.5" />)}
+              {routes.map((r) => <circle class="route-hit" cx={modelX} cy={r.outY} r="8" style={`animation-delay:${r.delay}s`} />)}
+              <circle class="router-ring" cx={router.x} cy={router.y} r="12" />
+              <circle class="router-core" cx={router.x} cy={router.y} r="3.5" />
+            </svg>
+            <h1 class="headline">Right model.<br />Right task.<br />Right budget.</h1>
+          </div>
+
+          <p class="subline">Every coding-agent session, routed to the cheapest model that can do the job.</p>
+
+          <div id="waitlist" class="waitlist">
+            <form class="waitlist-form" data-endpoint={WAITLIST_ENDPOINT} novalidate>
+              <label for="email" class="sr-only">Work email</label>
+              <input id="email" name="email" type="email" required autocomplete="email" placeholder="you@company.com" />
+              <div class="honeypot" aria-hidden="true">
+                <label for="website">Website</label>
+                <input id="website" name="_honey" type="text" tabindex="-1" autocomplete="off" />
+              </div>
+              <button type="submit">Join the waitlist</button>
+            </form>
+            <div class="waitlist-done" role="status" hidden>
+              <svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5l3 3 7-7" /></svg>
+              <span>You are on the list. We will be in touch.</span>
+            </div>
+            <p class="waitlist-note" aria-live="polite">Early access for engineering teams.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="agents" aria-labelledby="agents-title">
+        <div class="container">
+          <h2 id="agents-title" class="eyebrow" style="margin:0;font-weight:400">Plugs into the coding agent you already use</h2>
+          <ul class="agent-list">
+            {agents.map((name) => <li>{name}</li>)}
+            <li class="more">and any other agent</li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="faq" class="faq" aria-labelledby="faq-title">
+        <h2 id="faq-title">Questions</h2>
+        {faqs.map((item) => (
+          <details>
+            <summary>
+              <span>{item.q}</span>
+              <svg class="plus" aria-hidden="true" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="#A1A1A1" stroke-width="1.5" stroke-linecap="round"><path d="M9 3v12M3 9h12" /></svg>
+            </summary>
+            <p>{item.a}</p>
+          </details>
+        ))}
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <span class="wordmark">fidius</span>
+        <span>© {new Date().getFullYear()} Fidius</span>
+      </div>
+    </footer>
+
+    <script>
+      const form = document.querySelector<HTMLFormElement>('.waitlist-form')!;
+      const done = document.querySelector<HTMLElement>('.waitlist-done')!;
+      const note = document.querySelector<HTMLElement>('.waitlist-note')!;
+      const button = form.querySelector('button')!;
+      const defaultNote = note.textContent;
+
+      const showError = (message: string) => {
+        note.textContent = message;
+        note.dataset.state = 'error';
+      };
+
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const email = (form.elements.namedItem('email') as HTMLInputElement).value.trim();
+        const trap = (form.elements.namedItem('_honey') as HTMLInputElement).value;
+
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+          showError('Please enter a valid email address.');
+          return;
+        }
+        note.textContent = defaultNote;
+        delete note.dataset.state;
+
+        // Bots fill the hidden field; pretend it worked and send nothing.
+        if (!trap) {
+          const endpoint = form.dataset.endpoint;
+          if (!endpoint) {
+            showError('The waitlist is not connected yet.');
+            return;
+          }
+          button.disabled = true;
+          button.textContent = 'Joining…';
+          try {
+            const res = await fetch(endpoint, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+              body: JSON.stringify({ email, _subject: 'New Fidius waitlist signup', _template: 'table' }),
+            });
+            const data = await res.json();
+            if (!res.ok || String(data.success) !== 'true') throw new Error(data.message);
+          } catch {
+            button.disabled = false;
+            button.textContent = 'Join the waitlist';
+            showError('Something went wrong. Please try again.');
+            return;
+          }
+        }
+
+        form.hidden = true;
+        done.hidden = false;
+        note.textContent = '';
+      });
+    </script>
+  </body>
+</html>
