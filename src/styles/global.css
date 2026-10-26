@@ -262,6 +262,20 @@ button:focus-visible, summary:focus-visible, a:focus-visible {
 
 .agent-list .more { color: var(--text-3); font-weight: 400; }
 
+/* Demo video */
+
+.demo { max-width: 960px; margin: 0 auto; padding: 104px 24px 0; }
+
+.demo-video {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  background: #000;
+  border: 1px solid var(--line-2);
+  border-radius: 12px;
+}
+
 /* FAQ */
 
 .faq { max-width: 760px; margin: 0 auto; padding: 104px 24px 120px; }
