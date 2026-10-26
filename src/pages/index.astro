@@ -2,9 +2,9 @@
 import '../styles/global.css';
 import { WAITLIST_ENDPOINT } from '../config';
 
-const title = 'Fidius — Model routing for coding agents';
+const title = 'Fidius — Auto-routing for coding agents';
 const description =
-  'Right model. Right task. Right budget. Every coding-agent session, routed to the cheapest model that can do the job.';
+  'Right model. Right task. Right budget. Fidius automatically picks the cheapest model that can do each coding-agent session.';
 
 // Routing drawing, in the SVG's own units (1600 × 800 = 16em × 8em around the headline).
 // The router sits on the dot of the "i" in "Right budget." (measured in a browser).
@@ -38,11 +38,11 @@ const faqs = [
   },
   {
     q: 'Does it work with any coding agent?',
-    a: 'Yes. Fidius sits between your coding agent and the models, so it works with Claude Code, Cursor, Codex, GitHub Copilot, Gemini CLI and any other agent your team uses, without changing how anyone works.',
+    a: 'Yes. Fidius decides which model handles each session, so it works with Claude Code, Cursor, Codex, GitHub Copilot, Gemini CLI and any other agent your team uses, without changing how anyone works.',
   },
   {
-    q: 'Does it work with my current AI gateway or Bedrock account?',
-    a: 'Yes. Fidius works on top of your existing AI gateway or Amazon Bedrock account. You keep your providers and your keys; Fidius decides which model handles each session.',
+    q: 'Is this an AI gateway or context shrinking tool?',
+    a: 'No. A gateway forwards requests to the models you choose. Context tools shrink what you send. Fidius makes the decision itself: which model should handle each session. It runs on top of your existing gateway or Bedrock account.',
   },
   {
     q: 'How does the routing work?',
@@ -89,7 +89,7 @@ const faqs = [
     <main>
       <section id="top" class="hero">
         <div class="hero-inner">
-          <div class="eyebrow">Model routing for coding agents</div>
+          <div class="eyebrow">Auto-routing for coding agents</div>
 
           <div class="headline-wrap">
             <svg class="routes" aria-hidden="true" viewBox="0 0 1600 800">
@@ -114,7 +114,7 @@ const faqs = [
             <h1 class="headline">Right model.<br />Right task.<br />Right budget.</h1>
           </div>
 
-          <p class="subline">Every coding-agent session, routed to the cheapest model that can do the job.</p>
+          <p class="subline">Fidius automatically picks the cheapest model that can do each coding-agent session.</p>
 
           <div id="waitlist" class="waitlist">
             <form class="waitlist-form" data-endpoint={WAITLIST_ENDPOINT} novalidate>
