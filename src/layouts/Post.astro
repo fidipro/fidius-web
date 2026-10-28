@@ -1,0 +1,39 @@
+---
+import Base from './Base.astro';
+import '../styles/post.css';
+import { postPath, formatDate, type Post } from '../blog';
+
+interface Props {
+  post: Post;
+  eyebrow: string;
+  dek: string;
+  toc: { id: string; label: string }[];
+}
+
+const { post, eyebrow, dek, toc } = Astro.props;
+---
+
+<Base title={`${post.title} — Fidius`} description={post.description} path={postPath(post)} ogType="article">
+  <div class="post-wrap container">
+    <nav class="toc" aria-label="Contents">
+      <p>Contents</p>
+      <ol>
+        {toc.map((item) => <li><a href={`#${item.id}`}>{item.label}</a></li>)}
+      </ol>
+    </nav>
+
+    <article class="post">
+      <header class="post-header">
+        <div class="eyebrow">{eyebrow}</div>
+        <h1>{post.title}</h1>
+        <p class="dek">{dek}</p>
+        <div class="byline">
+          <span>The Fidius team</span>
+          <time datetime={post.date}>{formatDate(post.date)}</time>
+          <span>{post.readTime}</span>
+        </div>
+      </header>
+      <slot />
+    </article>
+  </div>
+</Base>

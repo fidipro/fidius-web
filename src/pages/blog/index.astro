@@ -1,0 +1,21 @@
+---
+import Base from '../../layouts/Base.astro';
+import { posts, postPath, formatDate } from '../../blog';
+---
+
+<Base title="Blog — Fidius" description="Research and notes from Fidius on model routing for coding agents." path="/blog/">
+  <section class="blog-index">
+    <h1>Blog</h1>
+    <ul class="post-list">
+      {posts.map((post) => (
+        <li>
+          <a href={postPath(post)}>
+            <time class="eyebrow" datetime={post.date}>{formatDate(post.date)}</time>
+            <h2>{post.title}</h2>
+            <p>{post.description}</p>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+</Base>

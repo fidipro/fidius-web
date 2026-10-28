@@ -1,0 +1,120 @@
+/* Blog post: one reading column with figures, plus a sticky contents rail on wide screens. */
+
+.post-wrap {
+  --body-text: #C8C8C8;
+  --surface: #0A0A0A;
+  --code-bg: #111111;
+  --t1: #2F6FA3; /* haiku tier */
+  --t2: #4F9BE0; /* sonnet tier */
+  --t3: #A8D4FF; /* opus tier */
+  --oracle: #FFFFFF;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 56px;
+  padding-top: 56px;
+  padding-bottom: 120px;
+}
+
+@media (min-width: 1000px) { .post-wrap { grid-template-columns: 200px minmax(0, 1fr); } }
+
+.toc { display: none; }
+
+@media (min-width: 1000px) {
+  .toc { display: block; position: sticky; top: 32px; align-self: start; font-size: 13px; }
+  .toc p { margin: 0 0 14px; font-family: var(--mono); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--text-3); }
+  .toc ol { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+  .toc a { color: var(--text-2); }
+  .toc a:hover { color: var(--text); }
+}
+
+.post { min-width: 0; max-width: 720px; font-size: 17px; line-height: 1.75; color: var(--body-text); }
+
+.post-header { display: grid; gap: 18px; margin-bottom: 44px; }
+
+.post h1 {
+  margin: 0;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(40px, 6vw, 64px);
+  line-height: 1.04;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  text-wrap: balance;
+}
+
+.post .dek { margin: 0; font-size: 19px; line-height: 1.65; color: var(--text-2); text-wrap: pretty; }
+
+.post .byline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line-2);
+  font-size: 13px;
+  color: var(--text-3);
+}
+
+.post h2 {
+  margin: 72px 0 16px;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 38px;
+  line-height: 1.12;
+  color: var(--text);
+  text-wrap: balance;
+  scroll-margin-top: 24px;
+}
+
+.post h3 { margin: 40px 0 10px; font-size: 19px; font-weight: 500; letter-spacing: -0.01em; color: var(--text); scroll-margin-top: 24px; }
+
+.post p { margin: 0 0 20px; }
+
+.post a { color: var(--text); text-decoration: underline; text-decoration-color: var(--text-3); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+.post a:hover { text-decoration-color: var(--text); }
+
+.post strong { font-weight: 500; color: var(--text); }
+
+.post figure { margin: 36px 0; padding: 20px; background: var(--surface); border: 1px solid var(--line-2); border-radius: 12px; }
+.post figure svg { display: block; width: 100%; height: auto; }
+
+.post figcaption, .post p.caption { margin-top: 12px; font-size: 13px; line-height: 1.6; color: var(--text-3); }
+.post figcaption b { font-weight: 500; color: var(--text); }
+
+.post .table-wrap { overflow-x: auto; margin: 24px 0 28px; }
+.post table { width: 100%; border-collapse: collapse; font-size: 14px; line-height: 1.5; font-variant-numeric: tabular-nums; }
+.post th, .post td { padding: 10px 12px; border-bottom: 1px solid var(--line-2); text-align: left; vertical-align: top; }
+.post th:first-child, .post td:first-child { padding-left: 0; }
+.post th { font-family: var(--mono); font-size: 11px; font-weight: 400; letter-spacing: .1em; text-transform: uppercase; color: var(--text-3); }
+.post td.num, .post th.num { text-align: right; }
+.post td.num:last-child, .post th.num:last-child { padding-right: 0; }
+
+.post code { padding: 1px 5px; border-radius: 4px; background: var(--code-bg); font-family: var(--mono); font-size: .85em; }
+
+.post pre {
+  overflow-x: auto;
+  margin: 0 0 24px;
+  padding: 16px;
+  background: var(--code-bg);
+  border: 1px solid var(--line-2);
+  border-radius: 10px;
+  font-family: var(--mono);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.post .legend { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 10px; font-size: 13px; color: var(--text-2); }
+.post .legend i { display: inline-block; width: 11px; height: 11px; margin-right: 6px; border-radius: 2px; vertical-align: -1px; }
+
+.post .svg-axis { stroke: var(--border); }
+.post .svg-text { fill: var(--text-2); font-family: var(--sans); font-size: 12px; }
+
+.post .cta { display: grid; gap: 10px; margin: 28px 0; padding: 24px; border: 1px solid var(--border); border-radius: 12px; }
+.post .cta p { margin: 0; }
+
+.post sup.fn { margin-left: 1px; font-size: .62em; line-height: 0; }
+.post sup.fn a { text-decoration: none; color: var(--text-2); }
+.post sup.fn a:hover { color: var(--text); }
+
+.post ol.refs { display: grid; gap: 10px; margin: 0 0 28px; padding-left: 26px; font-size: 14px; line-height: 1.6; color: var(--text-2); }
+.post ol.refs li { scroll-margin-top: 24px; }
+.post ol.refs li:target { color: var(--text); }

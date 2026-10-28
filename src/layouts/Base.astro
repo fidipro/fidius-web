@@ -1,0 +1,59 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  path: string;
+  ogType?: string;
+}
+
+const { title, description, path, ogType = 'website' } = Astro.props;
+const url = new URL(path, Astro.site).href;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={url} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="theme-color" content="#000000" />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:url" content={url} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta name="twitter:card" content="summary" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400&family=Instrument+Serif:ital@0;1&display=swap"
+    />
+  </head>
+  <body>
+    <header class="site-header container">
+      <a href="/#top" class="wordmark" aria-label="Fidius home">fidius</a>
+      <nav class="site-nav" aria-label="Main">
+        <a href="/#faq" class="muted">FAQ</a>
+        <a href="/#about" class="muted">About</a>
+        <a href="/blog/" class="muted">Blog</a>
+        <a href="/#waitlist" class="pill">Join waitlist</a>
+      </nav>
+    </header>
+
+    <main>
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <span class="wordmark">fidius</span>
+        <span>© {new Date().getFullYear()} Fidius</span>
+      </div>
+    </footer>
+  </body>
+</html>
