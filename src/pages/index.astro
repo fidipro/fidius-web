@@ -2,23 +2,23 @@
 import Base from '../layouts/Base.astro';
 import { WAITLIST_ENDPOINT } from '../config';
 
-const title = 'Fidius — Auto-routing for coding agents';
+const title = 'Fidius — The auto-router that learns your code';
 const description =
-  'Right model. Right task. Right budget. Fidius automatically picks the cheapest model that can do each coding-agent session.';
+  'Trained on your own data, in your environment, across any vendor. Up to 50% lower coding-agent spend, without accuracy loss.';
 
 // Routing drawing, in the SVG's own units (1600 × 800 = 16em × 8em around the headline).
-// The router sits on the dot of the "i" in "Right budget." (measured in a browser).
-const router = { x: 636, y: 440 };
-const modelX = 1230;
+// The router sits on the dot of the "i" in "cutting" (measured in a browser).
+const router = { x: 706, y: 439 };
+const modelX = 1330;
 const modelYs = [180, 290, 400, 510, 620];
 const inYs = [280, 440, 520];
 
 const incoming = (y: number) =>
   y === router.y
     ? `M-200 ${y} L${router.x} ${y}`
-    : `M-200 ${y} C 300 ${y}, 455 ${router.y}, ${router.x} ${router.y}`;
+    : `M-200 ${y} C 300 ${y}, ${router.x - 181} ${router.y}, ${router.x} ${router.y}`;
 const branch = (y: number) =>
-  `M${router.x} ${router.y} C 845 ${router.y}, 940 ${y}, ${modelX} ${y}`;
+  `M${router.x} ${router.y} C ${router.x + 209} ${router.y}, ${router.x + 304} ${y}, ${modelX} ${y}`;
 
 // Each route: which incoming line a session arrives on, which model it is routed to, and when.
 const routes = [
@@ -30,6 +30,44 @@ const routes = [
 ];
 
 const agents = ['Claude Code', 'Cursor', 'OpenAI Codex', 'GitHub Copilot', 'Gemini CLI'];
+
+const comparison = [
+  {
+    label: 'Models',
+    them: 'A fixed menu of models the vendor picked.',
+    us: 'Any model, closed or open. We choose the pool with you at onboarding.',
+  },
+  {
+    label: 'Training',
+    them: 'Trained on public benchmarks.',
+    us: 'Trained on your own coding tasks.',
+  },
+  {
+    label: 'Quality bar',
+    them: 'Their definition of good enough.',
+    us: 'Tested on your code, checked continuously.',
+  },
+  {
+    label: 'Where is the data',
+    them: 'A black box in their cloud.',
+    us: 'Runs in your environment.',
+  },
+];
+
+const steps = [
+  {
+    title: 'Choose your models',
+    text: 'Together we pick the models Fidius can route to: closed or open, from any provider.',
+  },
+  {
+    title: 'Define your evals',
+    text: 'We set test criteria with your team that describe what good work looks like in your codebase.',
+  },
+  {
+    title: 'Train and route',
+    text: 'Fidius learns from your coding tasks and sends each session to the cheapest model that passes your evals, checked continuously.',
+  },
+];
 
 const faqs = [
   {
@@ -45,12 +83,12 @@ const faqs = [
     a: 'No. A gateway forwards requests to the models you choose. Context tools shrink what you send. Fidius makes the decision itself: which model should handle each session. It runs on top of your existing gateway or Bedrock account.',
   },
   {
-    q: 'How does the routing work?',
-    a: 'We train the routing layer on your specific coding tasks. No data leaves your environment, and we do not retain any of it.',
+    q: 'How is this different from built-in auto modes or other routers?',
+    a: 'Generic routers make one decision for everyone, based on public benchmarks and a model menu they chose. Fidius is trained on your coding tasks, routes across the models you pick, and sends work to a cheaper model only when your own evals show accuracy is maintained. No data leaves your environment, and we do not retain any of it.',
   },
   {
-    q: 'How do you know a cheaper model is accurate enough for my task?',
-    a: 'During onboarding we define test criteria with you, and they are checked continuously on your tasks. We take task accuracy seriously: the router sends work to a cheaper model only when it is certain accuracy is maintained.',
+    q: 'Which models can Fidius route to?',
+    a: 'Any model, closed or open-weight, from any provider. During onboarding we choose the pool with you, so your team can work with every model that is relevant to your software.',
   },
 ];
 ---
@@ -58,7 +96,7 @@ const faqs = [
 <Base title={title} description={description} path="/">
     <section id="top" class="hero">
       <div class="hero-inner">
-        <div class="eyebrow">Auto-routing for coding agents</div>
+        <div class="eyebrow hero-eyebrow">Own your intelligence</div>
 
         <div class="headline-wrap">
           <svg class="routes" aria-hidden="true" viewBox="0 0 1600 800">
@@ -80,10 +118,10 @@ const faqs = [
             <circle class="router-ring" cx={router.x} cy={router.y} r="12" />
             <circle class="router-core" cx={router.x} cy={router.y} r="3.5" />
           </svg>
-          <h1 class="headline">Right model.<br />Right task.<br />Right budget.</h1>
+          <h1 class="headline">The auto-router that<br />learns your code.<br />Start cutting your spend.</h1>
         </div>
 
-        <p class="subline">Fidius automatically picks the cheapest model that can do each coding-agent session.</p>
+        <p class="subline">Trained on your own data, in your environment, across any vendor. Up to 50% lower coding-agent spend, without accuracy loss.</p>
 
         <div id="waitlist" class="waitlist">
           <form class="waitlist-form" data-endpoint={WAITLIST_ENDPOINT} novalidate>
@@ -125,6 +163,39 @@ const faqs = [
         width="1920"
         height="1080"
       ></video>
+    </section>
+
+    <section id="why" class="compare" aria-labelledby="compare-title">
+      <div class="eyebrow">Why Fidius</div>
+      <h2 id="compare-title">Not a generic router.</h2>
+      <div class="compare-grid">
+        <div class="compare-head" aria-hidden="true">
+          <span></span>
+          <span>Generic routers</span>
+          <span>Fidius</span>
+        </div>
+        {comparison.map((row) => (
+          <div class="compare-row">
+            <div class="compare-label">{row.label}</div>
+            <div class="compare-them"><span class="compare-tag">Generic routers</span>{row.them}</div>
+            <div class="compare-us"><span class="compare-tag">Fidius</span>{row.us}</div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section id="how" class="steps" aria-labelledby="steps-title">
+      <div class="eyebrow">How it works</div>
+      <h2 id="steps-title">All models, your evals.</h2>
+      <ol class="step-list">
+        {steps.map((step, i) => (
+          <li>
+            <span class="step-num">{String(i + 1).padStart(2, '0')}</span>
+            <h3>{step.title}</h3>
+            <p>{step.text}</p>
+          </li>
+        ))}
+      </ol>
     </section>
 
     <section id="faq" class="faq" aria-labelledby="faq-title">
